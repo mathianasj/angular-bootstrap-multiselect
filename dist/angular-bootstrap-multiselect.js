@@ -13,7 +13,7 @@
         }, object)
     };
 
-    multiselect.directive('multiselect', ['$filter', '$document', '$log', function ($filter, $document, $log) {
+    multiselect.directive('multiselect', function ($filter, $document, $log) {
         return {
             restrict: 'AE',
             scope: {
@@ -26,13 +26,15 @@
                 showUnselectAll: '=?',
                 showSearch: '=?',
                 searchFilter: '=?',
-                disabled: '=?ngDisabled'
+                disabled: '=?ngDisabled',
+                defaultText: '@'
             },
             require: 'ngModel',
             templateUrl: 'multiselect.html',
             link: function ($scope, $element, $attrs, $ngModelCtrl) {
                 $scope.selectionLimit = $scope.selectionLimit || 0;
                 $scope.searchLimit = $scope.searchLimit || 25;
+                $scope.defaultText = $scope.defaultText || 'Select';
 
                 $scope.searchFilter = '';
 
@@ -92,6 +94,16 @@
                         return true;
                     }
                 };
+
+                $scope.$watch('options',function(data){ 
+                    if (typeof data != 'undefined') {
+                        $scope.resolvedOptions = data;
+                        updateSelectionLists();
+                    } else {
+                        $scope.resolvedOptions = [];
+                        updateSelectionLists();
+                    }
+                },true); 
 
                 var watcher = $scope.$watch('selectedOptions', function () {
                     $ngModelCtrl.$setViewValue(angular.copy($scope.selectedOptions));
@@ -229,7 +241,7 @@
 
             }
         };
-    }]);
+    });
 
 }());
 

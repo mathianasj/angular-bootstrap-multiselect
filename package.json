@@ -22,7 +22,7 @@
     "karma-chrome-launcher": "~0.1.2",
     "karma-jasmine": "~0.2.2",
     "karma-phantomjs-launcher": "~0.1.4",
-    "protractor": "~1.5.0",
+    "protractor": "~4.0.10",
     "protractor-screenshot-reporter": "0.0.5"
   },
   "scripts": {

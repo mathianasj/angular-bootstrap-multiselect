@@ -38,11 +38,6 @@
 
                 $scope.searchFilter = '';
 
-                $scope.resolvedOptions = [];
-                if (typeof $scope.options !== 'function') {
-                    $scope.resolvedOptions = $scope.options;
-                }
-
                 if (typeof $attrs.disabled != 'undefined') {
                     $scope.disabled = true;
                 }
@@ -99,6 +94,16 @@
                         return true;
                     }
                 };
+
+                $scope.$watch('options',function(data){ 
+                    if (typeof data != 'undefined') {
+                        $scope.resolvedOptions = data;
+                        updateSelectionLists();
+                    } else {
+                        $scope.resolvedOptions = [];
+                        updateSelectionLists();
+                    }
+                },true); 
 
                 var watcher = $scope.$watch('selectedOptions', function () {
                     $ngModelCtrl.$setViewValue(angular.copy($scope.selectedOptions));
@@ -226,6 +231,13 @@
                         }
                     }
                 };
+
+                $scope.resolvedOptions = [];
+                if (typeof $scope.options !== 'function') {
+                    $scope.resolvedOptions = $scope.options;
+                } else {
+                    $scope.updateOptions();
+                }
 
             }
         };
